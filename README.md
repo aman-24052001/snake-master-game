@@ -3,7 +3,7 @@
 An advanced implementation of the classic Snake game with modern features and responsive design. Built using vanilla HTML5, CSS3, and JavaScript.
 
 [![Play Now](https://img.shields.io/badge/Play-Now-green?style=for-the-badge)](https://aman-24052001.github.io/snake-master-game/)
-[![Demo Video](https://img.shields.io/badge/Watch-Demo-red?style=for-the-badge)](https://drive.google.com/file/d/1EOOVtR7PvfX-Wqcrk64FY6JWfDDoa1SM/view?usp=sharing)
+[![Demo Video](https://img.shields.io/badge/Watch-Demo-red?style=for-the-badge)](https://drive.google.com/file/d/1EOOVtR7PvfX-Wqcrk84FY6JWfDDoa1SM/view?usp=drive_link)
 
 ## 🎮 Features
 
