@@ -4,25 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#050508">
-<title>Snake Master</title>
+<meta name="theme-color" content="#0A0A12">
+<title>Snake Master — One Piece</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --void:#050508;
-  --lime:#0BFF6E;
-  --lime-dim:#04802E;
-  --lime-glow:rgba(11,255,110,0.35);
-  --magenta:#FF2D78;
-  --magenta-glow:rgba(255,45,120,0.4);
+  --void:#0A0A12;
+  --lime:#FF3B2F;
+  --lime-dim:#8B1A14;
+  --lime-glow:rgba(255,59,47,0.35);
+  --magenta:#9B59B6;
+  --magenta-glow:rgba(155,89,182,0.45);
   --cyan:#00D4FF;
   --cyan-glow:rgba(0,212,255,0.35);
-  --amber:#FFB800;
-  --amber-glow:rgba(255,184,0,0.4);
-  --text:#F0F6FC;
-  --muted:rgba(240,246,252,0.45);
+  --amber:#F0A500;
+  --amber-glow:rgba(240,165,0,0.45);
+  --text:#F5E6C8;
+  --muted:rgba(245,230,200,0.45);
+  --ocean:#0D1B2E;
+  --ocean2:#0A1520;
+  --straw:#F0A500;
 }
 html,body{
   width:100%;height:100%;overflow:hidden;
@@ -43,13 +46,13 @@ html,body{
 .screen.active{opacity:1;pointer-events:all}
 .screen.out{opacity:0;pointer-events:none}
 
-/* ── SCANLINE OVERLAY ── */
+/* ── OCEAN SCANLINE OVERLAY ── */
 body::before{
   content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
   background:repeating-linear-gradient(
     0deg,
-    transparent,transparent 2px,
-    rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px
+    transparent,transparent 3px,
+    rgba(0,10,30,0.06) 3px,rgba(0,10,30,0.06) 6px
   );
 }
 
@@ -66,18 +69,18 @@ body::before{
 }
 .hud-score{display:flex;flex-direction:column;align-items:flex-start}
 .hud-label{font-size:.55rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
-.hud-value{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:700;color:var(--lime);line-height:1;text-shadow:0 0 20px var(--lime-glow)}
+.hud-value{font-family:'Pirata One',cursive;font-size:1.6rem;font-weight:400;color:var(--amber);line-height:1;text-shadow:0 0 20px var(--amber-glow)}
 .hud-hi{align-items:flex-end}
 .hud-hi .hud-value{color:var(--cyan);text-shadow:0 0 20px var(--cyan-glow);font-size:1rem;font-weight:400}
 .hud-center{display:flex;flex-direction:column;align-items:center;gap:.1rem}
 .level-badge{
-  font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:.15em;
-  color:var(--amber);border:1px solid rgba(255,184,0,.3);padding:.2rem .55rem;
+  font-family:'Pirata One',cursive;font-size:.75rem;letter-spacing:.1em;
+  color:var(--amber);border:1px solid rgba(240,165,0,.35);padding:.2rem .55rem;
   text-shadow:0 0 10px var(--amber-glow);
 }
 .combo-display{
-  font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;
-  color:var(--magenta);text-shadow:0 0 15px var(--magenta-glow);
+  font-family:'Pirata One',cursive;font-size:.85rem;font-weight:400;
+  color:#FF3B2F;text-shadow:0 0 15px rgba(255,59,47,0.6);
   opacity:0;transform:scale(.8);transition:opacity .15s,transform .15s;
   min-height:1.1rem;
 }
@@ -116,7 +119,7 @@ body::before{
 #startScreen{background:var(--void)}
 .start-bg{
   position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 55% at 50% 45%, rgba(11,255,110,.06) 0%, transparent 70%);
+  background:radial-gradient(ellipse 70% 55% at 50% 45%, rgba(240,165,0,.07) 0%, rgba(13,27,46,.6) 60%, transparent 100%);
   pointer-events:none;
 }
 .start-snake-preview{
@@ -124,53 +127,53 @@ body::before{
 }
 .start-content{position:relative;z-index:2;text-align:center;padding:2rem}
 .start-eyebrow{
-  font-size:.65rem;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;
-  margin-bottom:1.5rem;opacity:.7;
+  font-size:.65rem;letter-spacing:.3em;color:var(--amber);text-transform:uppercase;
+  margin-bottom:1.2rem;opacity:.8;
 }
 .start-title{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(2.4rem,12vw,4rem);
-  font-weight:900;line-height:1;
+  font-family:'Pirata One',cursive;
+  font-size:clamp(3rem,14vw,5.5rem);
+  font-weight:400;line-height:.9;
   margin-bottom:.3rem;
-  color:var(--lime);
-  text-shadow:0 0 40px var(--lime-glow),0 0 80px rgba(11,255,110,.2);
-  letter-spacing:.05em;
+  color:var(--amber);
+  text-shadow:0 0 40px var(--amber-glow),0 0 80px rgba(240,165,0,.2),3px 3px 0 rgba(0,0,0,.5);
+  letter-spacing:.03em;
 }
 .start-sub{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(.6rem,3vw,.85rem);
-  font-weight:400;letter-spacing:.2em;
-  color:var(--muted);margin-bottom:3rem;text-transform:uppercase;
+  font-family:'Pirata One',cursive;
+  font-size:clamp(.75rem,3.5vw,1rem);
+  font-weight:400;letter-spacing:.15em;
+  color:var(--muted);margin-bottom:2.5rem;text-transform:uppercase;
 }
 .highscore-display{
-  font-family:'Orbitron',monospace;font-size:.75rem;
-  color:var(--cyan);letter-spacing:.12em;margin-bottom:2.5rem;
+  font-family:'Pirata One',cursive;font-size:.9rem;
+  color:var(--cyan);letter-spacing:.12em;margin-bottom:2rem;
   text-shadow:0 0 15px var(--cyan-glow);
 }
 .start-btn{
   display:inline-block;
-  font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--void);background:var(--lime);
-  border:none;padding:1rem 2.5rem;cursor:pointer;
+  font-family:'Pirata One',cursive;font-size:1.1rem;font-weight:400;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--void);background:var(--amber);
+  border:none;padding:1rem 2.8rem;cursor:pointer;
   position:relative;overflow:hidden;
   transition:transform .15s,box-shadow .15s;
-  box-shadow:0 0 30px var(--lime-glow),0 0 60px rgba(11,255,110,.15);
+  box-shadow:0 0 30px var(--amber-glow),0 0 60px rgba(240,165,0,.15);
 }
 .start-btn::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
   transform:translateX(-100%);transition:transform .5s;
 }
 .start-btn:hover::before{transform:translateX(100%)}
-.start-btn:hover{transform:scale(1.04);box-shadow:0 0 40px var(--lime-glow),0 0 80px rgba(11,255,110,.2)}
+.start-btn:hover{transform:scale(1.04);box-shadow:0 0 40px var(--amber-glow),0 0 80px rgba(240,165,0,.2)}
 .start-btn:active{transform:scale(.97)}
 
 .start-controls{
   margin-top:2rem;font-size:.65rem;color:var(--muted);
   display:flex;flex-direction:column;gap:.35rem;letter-spacing:.06em;
 }
-.start-controls span{color:var(--lime);opacity:.8}
+.start-controls span{color:var(--amber);opacity:.9}
 
 /* ── PAUSE OVERLAY ── */
 #pauseOverlay{
@@ -179,56 +182,56 @@ body::before{
   display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
 }
 #pauseOverlay.show{display:flex}
-.pause-title{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:700;color:var(--lime);letter-spacing:.1em;text-shadow:0 0 30px var(--lime-glow)}
+.pause-title{font-family:'Pirata One',cursive;font-size:2rem;font-weight:400;color:var(--amber);letter-spacing:.08em;text-shadow:0 0 30px var(--amber-glow)}
 .pause-btn{
-  font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;letter-spacing:.15em;
-  color:var(--void);background:var(--lime);border:none;
+  font-family:'Pirata One',cursive;font-size:.95rem;font-weight:400;letter-spacing:.12em;
+  color:var(--void);background:var(--amber);border:none;
   padding:.75rem 2rem;cursor:pointer;
   transition:transform .15s,box-shadow .15s;
-  box-shadow:0 0 20px var(--lime-glow);
+  box-shadow:0 0 20px var(--amber-glow);
 }
 .pause-btn:hover{transform:scale(1.05)}
-.pause-btn.ghost{background:transparent;color:var(--lime);border:1px solid rgba(11,255,110,.4);box-shadow:none}
-.pause-btn.ghost:hover{border-color:var(--lime);box-shadow:0 0 15px var(--lime-glow)}
+.pause-btn.ghost{background:transparent;color:var(--amber);border:1px solid rgba(240,165,0,.4);box-shadow:none}
+.pause-btn.ghost:hover{border-color:var(--amber);box-shadow:0 0 15px var(--amber-glow)}
 
 /* ── GAME OVER SCREEN ── */
 #gameOverScreen{background:var(--void)}
 .go-bg{
   position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255,45,120,.07) 0%, transparent 65%);
+  background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(155,89,182,.09) 0%, rgba(13,27,46,.5) 60%, transparent 100%);
   pointer-events:none;
 }
 .go-content{position:relative;z-index:2;text-align:center;padding:2rem;width:100%;max-width:380px}
-.go-eyebrow{font-size:.6rem;letter-spacing:.3em;color:var(--magenta);text-transform:uppercase;margin-bottom:1rem;opacity:.8}
+.go-eyebrow{font-size:.6rem;letter-spacing:.3em;color:var(--magenta);text-transform:uppercase;margin-bottom:.6rem;opacity:.85;font-family:'Space Grotesk',sans-serif}
 .go-title{
-  font-family:'Orbitron',monospace;font-size:clamp(1.8rem,10vw,3rem);
-  font-weight:900;letter-spacing:.05em;color:var(--magenta);
-  text-shadow:0 0 40px var(--magenta-glow);margin-bottom:2rem;
+  font-family:'Pirata One',cursive;font-size:clamp(2.5rem,12vw,4rem);
+  font-weight:400;letter-spacing:.05em;color:#9B59B6;
+  text-shadow:0 0 40px rgba(155,89,182,.6),3px 3px 0 rgba(0,0,0,.5);margin-bottom:1.8rem;
 }
-.go-scores{display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem}
+.go-scores{display:flex;gap:1.8rem;justify-content:center;margin-bottom:2rem}
 .go-score-block{display:flex;flex-direction:column;align-items:center;gap:.3rem}
-.go-score-label{font-size:.6rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase}
-.go-score-val{font-family:'Orbitron',monospace;font-size:2rem;font-weight:700;color:var(--text);line-height:1}
+.go-score-label{font-size:.58rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;font-family:'Space Grotesk',sans-serif}
+.go-score-val{font-family:'Pirata One',cursive;font-size:2rem;font-weight:400;color:var(--text);line-height:1}
 .go-score-val.new-record{color:var(--amber);text-shadow:0 0 25px var(--amber-glow);animation:recordpulse 1s ease infinite alternate}
-@keyframes recordpulse{from{text-shadow:0 0 20px var(--amber-glow)}to{text-shadow:0 0 50px rgba(255,184,0,.7),0 0 80px rgba(255,184,0,.3)}}
+@keyframes recordpulse{from{text-shadow:0 0 20px var(--amber-glow)}to{text-shadow:0 0 50px rgba(240,165,0,.7),0 0 80px rgba(240,165,0,.3)}}
 .go-record-badge{
-  font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:.15em;
-  color:var(--amber);border:1px solid rgba(255,184,0,.4);padding:.2rem .6rem;margin-bottom:.5rem;
+  font-family:'Pirata One',cursive;font-size:.75rem;letter-spacing:.12em;
+  color:var(--amber);border:1px solid rgba(240,165,0,.4);padding:.2rem .6rem;margin-bottom:.5rem;
   display:none;
 }
 .go-record-badge.show{display:block}
 .go-btns{display:flex;flex-direction:column;gap:.75rem;align-items:center;width:100%}
 .go-btn{
   width:100%;max-width:240px;
-  font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;letter-spacing:.15em;
-  color:var(--void);background:var(--lime);border:none;
+  font-family:'Pirata One',cursive;font-size:.95rem;font-weight:400;letter-spacing:.12em;
+  color:var(--void);background:var(--amber);border:none;
   padding:.85rem 2rem;cursor:pointer;
   transition:transform .15s,box-shadow .15s;
-  box-shadow:0 0 25px var(--lime-glow);
+  box-shadow:0 0 25px var(--amber-glow);
 }
 .go-btn:hover{transform:scale(1.04)}
-.go-btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(240,246,252,.15);box-shadow:none}
-.go-btn.ghost:hover{color:var(--text);border-color:rgba(240,246,252,.4)}
+.go-btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(245,230,200,.15);box-shadow:none}
+.go-btn.ghost:hover{color:var(--text);border-color:rgba(245,230,200,.4)}
 
 /* ── LEVEL UP FLASH ── */
 #levelFlash{
@@ -237,9 +240,9 @@ body::before{
   opacity:0;
 }
 .level-flash-text{
-  font-family:'Orbitron',monospace;font-size:clamp(1.5rem,8vw,2.5rem);font-weight:900;
-  letter-spacing:.15em;color:var(--amber);
-  text-shadow:0 0 40px var(--amber-glow),0 0 80px rgba(255,184,0,.3);
+  font-family:'Pirata One',cursive;font-size:clamp(1.8rem,9vw,3rem);font-weight:400;
+  letter-spacing:.12em;color:var(--amber);
+  text-shadow:0 0 40px var(--amber-glow),0 0 80px rgba(240,165,0,.3),3px 3px 0 rgba(0,0,0,.5);
 }
 
 /* ── MOBILE SWIPE INDICATOR ── */
@@ -257,16 +260,16 @@ body::before{
 <!-- ── START SCREEN ── -->
 <div class="screen active" id="startScreen">
   <div class="start-bg"></div>
-  <canvas id="demoCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.18;pointer-events:none"></canvas>
+  <canvas id="demoCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.15;pointer-events:none"></canvas>
   <div class="start-content">
-    <div class="start-eyebrow">Mobile · Touch · Neon</div>
+    <div class="start-eyebrow">⚓ Grand Line · Devil Fruit Edition ⚓</div>
     <h1 class="start-title">SNAKE<br>MASTER</h1>
-    <div class="start-sub">Bio-organism edition</div>
-    <div class="highscore-display" id="startHiScore">BEST &nbsp;—&nbsp; 0</div>
-    <button class="start-btn" id="startBtn">TAP TO PLAY</button>
+    <div class="start-sub">~ One Piece ~</div>
+    <div class="highscore-display" id="startHiScore">BOUNTY  ——  0</div>
+    <button class="start-btn" id="startBtn">SET SAIL</button>
     <div class="start-controls">
-      <div>Swipe anywhere to turn &nbsp;·&nbsp; <span>Tap</span> to pause</div>
-      <div>3 foods in a row = <span>combo ×2</span></div>
+      <div>Swipe to steer · <span>Tap</span> to drop anchor</div>
+      <div>3 fruits in a row = <span>GOMU GOMU ×2</span></div>
     </div>
   </div>
 </div>
@@ -275,15 +278,15 @@ body::before{
 <div id="gameScreen">
   <div class="hud">
     <div class="hud-score">
-      <div class="hud-label">Score</div>
+      <div class="hud-label">Bounty</div>
       <div class="hud-value" id="hudScore">0</div>
     </div>
     <div class="hud-center">
-      <div class="level-badge" id="hudLevel">LVL 1</div>
-      <div class="combo-display" id="comboDisplay">×2 COMBO</div>
+      <div class="level-badge" id="hudLevel">Island 1</div>
+      <div class="combo-display" id="comboDisplay">GOMU GOMU! ×2</div>
     </div>
     <div class="hud-score hud-hi">
-      <div class="hud-label">Best</div>
+      <div class="hud-label">Record</div>
       <div class="hud-value" id="hudHi">0</div>
     </div>
   </div>
@@ -293,35 +296,35 @@ body::before{
 
 <!-- ── PAUSE OVERLAY ── -->
 <div id="pauseOverlay">
-  <div class="pause-title">PAUSED</div>
-  <button class="pause-btn" id="resumeBtn">Resume</button>
-  <button class="pause-btn ghost" id="quitBtn">Quit to Menu</button>
+  <div class="pause-title">⚓ ANCHORED</div>
+  <button class="pause-btn" id="resumeBtn">Resume Voyage</button>
+  <button class="pause-btn ghost" id="quitBtn">Back to Shore</button>
 </div>
 
 <!-- ── GAME OVER SCREEN ── -->
 <div class="screen" id="gameOverScreen">
   <div class="go-bg"></div>
   <div class="go-content">
-    <div class="go-eyebrow">Game Over</div>
-    <div class="go-title">DEAD.</div>
-    <div class="go-record-badge" id="recordBadge">★ NEW RECORD</div>
+    <div class="go-eyebrow">☠ Lost at Sea ☠</div>
+    <div class="go-title">ELIMINATED!</div>
+    <div class="go-record-badge" id="recordBadge">★ NEW BOUNTY RECORD</div>
     <div class="go-scores">
       <div class="go-score-block">
-        <div class="go-score-label">Score</div>
+        <div class="go-score-label">Bounty</div>
         <div class="go-score-val" id="goScore">0</div>
       </div>
       <div class="go-score-block">
-        <div class="go-score-label">Best</div>
+        <div class="go-score-label">Record</div>
         <div class="go-score-val" id="goHi">0</div>
       </div>
       <div class="go-score-block">
-        <div class="go-score-label">Length</div>
+        <div class="go-score-label">Crew</div>
         <div class="go-score-val" id="goLength">0</div>
       </div>
     </div>
     <div class="go-btns">
-      <button class="go-btn" id="playAgainBtn">Play Again</button>
-      <button class="go-btn ghost" id="menuBtn">Main Menu</button>
+      <button class="go-btn" id="playAgainBtn">Set Sail Again</button>
+      <button class="go-btn ghost" id="menuBtn">Return to Port</button>
     </div>
   </div>
 </div>
@@ -341,19 +344,20 @@ const POINTS_PER_FOOD = 10;
 const LEVEL_EVERY = 5;     // foods per level
 
 const C = {
-  void:    '#050508',
-  lime:    '#0BFF6E',
-  limeD:   '#07C252',
-  limeDim: '#04401C',
-  limeG:   'rgba(11,255,110,',
-  mag:     '#FF2D78',
-  magG:    'rgba(255,45,120,',
+  void:    '#0A0A12',
+  lime:    '#FF3B2F',   // Luffy red
+  limeD:   '#C42B21',
+  limeDim: '#5C1510',
+  limeG:   'rgba(255,59,47,',
+  mag:     '#9B59B6',   // Devil Fruit purple
+  magG:    'rgba(155,89,182,',
   cyan:    '#00D4FF',
   cyanG:   'rgba(0,212,255,',
-  amber:   '#FFB800',
-  amberG:  'rgba(255,184,0,',
-  white:   '#F0F6FC',
-  grid:    'rgba(11,255,110,0.04)',
+  amber:   '#F0A500',   // treasure gold
+  amberG:  'rgba(240,165,0,',
+  white:   '#F5E6C8',
+  grid:    'rgba(0,80,160,0.08)',  // ocean blue grid
+  ocean:   '#0D1B2E',
 };
 
 // ── AUDIO ─────────────────────────────────────────────────────────────────────
@@ -718,7 +722,7 @@ class SnakeGame {
     // Show combo
     if(this.combo>=2){
       const cd=document.getElementById('comboDisplay');
-      cd.textContent=`×${Math.min(this.combo,9)} COMBO`;
+      cd.textContent=this.combo>=3?`GOMU GOMU! ×${Math.min(this.combo,9)}`:`×${Math.min(this.combo,9)} COMBO`;
       cd.classList.add('show');
     }
 
@@ -726,7 +730,7 @@ class SnakeGame {
     if(this.foodEaten % LEVEL_EVERY === 0){
       this.level++;
       this.speed = Math.max(MIN_SPEED, BASE_SPEED-(this.level-1)*SPEED_STEP);
-      document.getElementById('hudLevel').textContent=`LVL ${this.level}`;
+      document.getElementById('hudLevel').textContent=`Island ${this.level}`;
       this.flashLevel();
       Audio.lvlUp();
       if(navigator.vibrate) navigator.vibrate([40,20,40,20,40]);
@@ -756,29 +760,26 @@ class SnakeGame {
 
   flashLevel() {
     const fl=document.getElementById('levelFlash');
-    document.getElementById('levelFlashText').textContent=`LEVEL ${this.level}`;
+    document.getElementById('levelFlashText').textContent=`NEW ISLAND! ${this.level}`;
     fl.style.animation='none';
-    fl.offsetHeight; // reflow
+    fl.offsetHeight;
     fl.style.animation='levelflash .9s ease forwards';
   }
 
   die() {
     this.dead=true;
-    // Death particles from head
     const hx=(this.snake[0].x+.5)*this.cell;
     const hy=(this.snake[0].y+.5)*this.cell;
-    this.ps.emit(hx,hy,C.mag,22,6);
-    this.ps.shockwave(hx,hy,C.mag);
-    this.ps.shockwave(hx,hy,'rgba(255,45,120,0.6)');
+    this.ps.emit(hx,hy,'#9B59B6',22,6);
+    this.ps.shockwave(hx,hy,'#9B59B6');
+    this.ps.shockwave(hx,hy,'rgba(155,89,182,0.5)');
     if(navigator.vibrate) navigator.vibrate([60,30,60,30,100]);
     Audio.die();
 
-    // Save high score
     const hi=parseInt(localStorage.getItem('snakeHi'))||0;
     const isRecord=this.score>hi;
     if(isRecord) localStorage.setItem('snakeHi',this.score);
 
-    // Draw one more frame for death flash
     setTimeout(()=>{
       showScreen('gameOverScreen');
       document.getElementById('goScore').textContent=this.score;
@@ -786,7 +787,7 @@ class SnakeGame {
       document.getElementById('goLength').textContent=this.snake.length;
       document.getElementById('goScore').classList.toggle('new-record',isRecord);
       document.getElementById('recordBadge').classList.toggle('show',isRecord);
-      document.getElementById('startHiScore').textContent=`BEST  —  ${Math.max(hi,this.score)}`;
+      document.getElementById('startHiScore').textContent=`BOUNTY  ——  ${Math.max(hi,this.score)}`;
       document.getElementById('hudHi').textContent=Math.max(hi,this.score);
     }, 420);
   }
@@ -802,11 +803,18 @@ class SnakeGame {
     const ctx=this.ctx, cs=this.canvasSize, cell=this.cell;
     ctx.clearRect(0,0,cs,cs);
 
-    // Background
+    // Background — deep ocean
     ctx.fillStyle=C.void;
     ctx.fillRect(0,0,cs,cs);
 
-    // Grid
+    // Ocean radial depth
+    const bgG=ctx.createRadialGradient(cs/2,cs/2,0,cs/2,cs/2,cs*.7);
+    bgG.addColorStop(0,'rgba(13,27,46,0.9)');
+    bgG.addColorStop(1,'rgba(5,5,10,0.0)');
+    ctx.fillStyle=bgG;
+    ctx.fillRect(0,0,cs,cs);
+
+    // Ocean grid — blue tint
     ctx.strokeStyle=C.grid;
     ctx.lineWidth=.5;
     for(let i=0;i<=GRID;i++){
@@ -814,12 +822,25 @@ class SnakeGame {
       ctx.beginPath();ctx.moveTo(0,i*cell);ctx.lineTo(cs,i*cell);ctx.stroke();
     }
 
-    // Border glow
+    // Subtle wave shimmer lines
+    ctx.save();
+    ctx.globalAlpha=0.04+0.02*Math.sin(this.tick*.02);
+    ctx.strokeStyle='#1A5FA0';
+    ctx.lineWidth=1;
+    for(let i=0;i<GRID;i+=4){
+      ctx.beginPath();
+      ctx.moveTo(0,i*cell);ctx.lineTo(cs,i*cell);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Border — golden frame like a treasure map
     const borderG=ctx.createLinearGradient(0,0,cs,cs);
-    borderG.addColorStop(0,C.limeG+'0.15)');
-    borderG.addColorStop(1,C.limeG+'0.05)');
+    borderG.addColorStop(0,'rgba(240,165,0,0.4)');
+    borderG.addColorStop(.5,'rgba(240,165,0,0.1)');
+    borderG.addColorStop(1,'rgba(240,165,0,0.4)');
     ctx.strokeStyle=borderG;
-    ctx.lineWidth=1.5;
+    ctx.lineWidth=2;
     ctx.strokeRect(1,1,cs-2,cs-2);
 
     // Trail
@@ -836,48 +857,60 @@ class SnakeGame {
       ctx.restore();
     });
 
-    // Snake body
+    // Snake body — Luffy red rubber segments
     const len=this.snake.length;
     this.snake.forEach((seg,i)=>{
-      if(i===0) return; // head drawn last
+      if(i===0) return;
       const t=1-(i/len);
-      const alpha=.25+t*.75;
+      const alpha=.3+t*.7;
       const gsize=cell*.82;
       const ox=seg.x*cell+(cell-gsize)/2;
       const oy=seg.y*cell+(cell-gsize)/2;
-      const r=gsize*.28;
+      const r=gsize*.35; // rounder = rubber
 
       ctx.save();
       ctx.globalAlpha=alpha;
 
-      // Body gradient: bright head-side to dim tail-side
+      // Rubber-stretch gradient: bright red core to deep red edge
       const g=ctx.createRadialGradient(
-        ox+gsize*.35,oy+gsize*.35,0,
-        ox+gsize/2,oy+gsize/2,gsize*.65
+        ox+gsize*.3,oy+gsize*.3,0,
+        ox+gsize/2,oy+gsize/2,gsize*.7
       );
-      g.addColorStop(0, i<3?'#5FFFAA':'#1DFF7A');
-      g.addColorStop(.6, C.limeD);
-      g.addColorStop(1, C.limeDim);
+      g.addColorStop(0,i<4?'#FF8880':'#FF5045');
+      g.addColorStop(.55,'#CC2820');
+      g.addColorStop(1,C.limeDim);
 
       ctx.fillStyle=g;
       ctx.shadowColor=C.lime;
-      ctx.shadowBlur=this.invincible>0?22:10*t;
+      ctx.shadowBlur=this.invincible>0?24:8*t;
       ctx.beginPath();
       ctx.roundRect(ox,oy,gsize,gsize,r);
       ctx.fill();
 
-      // Segment joint connector to next
+      // Sheen stripe — rubber highlight
+      if(t>.3){
+        ctx.globalAlpha=alpha*.25;
+        ctx.fillStyle='rgba(255,220,215,0.7)';
+        ctx.shadowBlur=0;
+        ctx.beginPath();
+        ctx.roundRect(ox+gsize*.15,oy+gsize*.12,gsize*.3,gsize*.18,gsize*.08);
+        ctx.fill();
+      }
+
+      // Joint connector
       if(i<len-1){
         const ns=this.snake[i+1];
         const dx=seg.x-ns.x, dy=seg.y-ns.y;
         if(Math.abs(dx)<=1&&Math.abs(dy)<=1){
+          ctx.globalAlpha=alpha*.8;
+          ctx.strokeStyle='#CC2820';
+          ctx.lineWidth=gsize*.5;
+          ctx.lineCap='round';
+          ctx.shadowColor=C.lime;
+          ctx.shadowBlur=4*t;
+          ctx.beginPath();
           const cx2=seg.x*cell+cell/2, cy2=seg.y*cell+cell/2;
           const nx2=ns.x*cell+cell/2, ny2=ns.y*cell+cell/2;
-          ctx.strokeStyle=C.limeD;
-          ctx.lineWidth=gsize*.55;
-          ctx.lineCap='round';
-          ctx.shadowBlur=6*t;
-          ctx.beginPath();
           ctx.moveTo(cx2,cy2);ctx.lineTo(nx2,ny2);
           ctx.stroke();
         }
@@ -885,68 +918,91 @@ class SnakeGame {
       ctx.restore();
     });
 
-    // Snake HEAD
+    // Snake HEAD — Luffy style: red body, straw hat vibe eyes
     (() => {
       const seg=this.snake[0];
-      const gsize=cell*.88;
+      const gsize=cell*.9;
       const ox=seg.x*cell+(cell-gsize)/2;
       const oy=seg.y*cell+(cell-gsize)/2;
-      const r=gsize*.32;
+      const r=gsize*.38;
 
       ctx.save();
-      // Pulse if invincible
-      const pulse=this.invincible>0?(1+.08*Math.sin(this.tick*.4)):1;
+      const pulse=this.invincible>0?(1+.09*Math.sin(this.tick*.4)):1;
       ctx.translate(seg.x*cell+cell/2, seg.y*cell+cell/2);
       ctx.scale(pulse,pulse);
       ctx.translate(-(seg.x*cell+cell/2), -(seg.y*cell+cell/2));
 
+      // Head body — bright Luffy red
       const hg=ctx.createRadialGradient(
-        ox+gsize*.3,oy+gsize*.3,0,
-        ox+gsize/2,oy+gsize/2,gsize*.65
+        ox+gsize*.28,oy+gsize*.28,0,
+        ox+gsize/2,oy+gsize/2,gsize*.72
       );
-      hg.addColorStop(0,'#AAFFD5');
-      hg.addColorStop(.4,'#3DFFAA');
-      hg.addColorStop(1,C.limeD);
+      hg.addColorStop(0,'#FF9990');
+      hg.addColorStop(.35,'#FF4438');
+      hg.addColorStop(1,'#8B1A14');
 
-      ctx.shadowColor=this.invincible>0?C.cyan:C.lime;
-      ctx.shadowBlur=this.invincible>0?30:18;
+      ctx.shadowColor=this.invincible>0?C.amber:'#FF3B2F';
+      ctx.shadowBlur=this.invincible>0?35:22;
       ctx.fillStyle=hg;
       ctx.beginPath();
       ctx.roundRect(ox,oy,gsize,gsize,r);
       ctx.fill();
 
-      // Eyes — positioned by direction
+      // Rubber shine
+      ctx.fillStyle='rgba(255,230,225,0.45)';
+      ctx.shadowBlur=0;
+      ctx.beginPath();
+      ctx.roundRect(ox+gsize*.15,oy+gsize*.1,gsize*.35,gsize*.2,gsize*.08);
+      ctx.fill();
+
+      // Eyes — wide, cartoony like Luffy
       const eyeOffset={
-        '1,0': [{ex:.7,ey:.28},{ex:.7,ey:.68}],
-        '-1,0':[{ex:.22,ey:.28},{ex:.22,ey:.68}],
-        '0,-1':[{ex:.28,ey:.22},{ex:.68,ey:.22}],
-        '0,1': [{ex:.28,ey:.7},{ex:.68,ey:.7}],
-        '0,0': [{ex:.28,ey:.3},{ex:.68,ey:.3}],
+        '1,0': [{ex:.72,ey:.3},{ex:.72,ey:.65}],
+        '-1,0':[{ex:.18,ey:.3},{ex:.18,ey:.65}],
+        '0,-1':[{ex:.3,ey:.18},{ex:.65,ey:.18}],
+        '0,1': [{ex:.3,ey:.72},{ex:.65,ey:.72}],
+        '0,0': [{ex:.3,ey:.32},{ex:.65,ey:.32}],
       };
       const k=`${this.dir.x},${this.dir.y}`;
       const eyes=eyeOffset[k]||eyeOffset['0,0'];
-      const er=gsize*.1;
+      const er=gsize*.115;
       eyes.forEach(e=>{
-        // White sclera
-        ctx.fillStyle='#FFFFFF';
+        // Sclera — slightly cream like One Piece
+        ctx.fillStyle='#FFF5E0';
         ctx.shadowBlur=0;
         ctx.beginPath();
         ctx.arc(ox+e.ex*gsize, oy+e.ey*gsize, er, 0, Math.PI*2);
         ctx.fill();
-        // Pupil
-        ctx.fillStyle=C.void;
+        // Pupil — big black dot
+        ctx.fillStyle='#0A0A0A';
         ctx.beginPath();
-        ctx.arc(ox+e.ex*gsize+er*.25, oy+e.ey*gsize+er*.25, er*.55, 0, Math.PI*2);
+        ctx.arc(ox+e.ex*gsize+er*.2, oy+e.ey*gsize+er*.25, er*.65, 0, Math.PI*2);
+        ctx.fill();
+        // Eye shine
+        ctx.fillStyle='rgba(255,255,255,0.8)';
+        ctx.beginPath();
+        ctx.arc(ox+e.ex*gsize-er*.1, oy+e.ey*gsize-er*.15, er*.22, 0, Math.PI*2);
         ctx.fill();
       });
+
+      // Straw hat band hint — tiny gold stripe on top when facing down
+      if(this.dir.y===1||this.dir.x!==0||(this.dir.x===0&&this.dir.y===0)){
+        ctx.fillStyle='rgba(240,165,0,0.5)';
+        ctx.shadowBlur=0;
+        const bandY = oy+gsize*.07;
+        ctx.beginPath();
+        ctx.roundRect(ox+gsize*.12,bandY,gsize*.76,gsize*.1,gsize*.04);
+        ctx.fill();
+      }
+
       ctx.restore();
 
       // Outer glow ring
       ctx.save();
-      ctx.globalAlpha=.35;
-      ctx.strokeStyle=C.lime;
-      ctx.shadowColor=C.lime;
-      ctx.shadowBlur=20;
+      ctx.globalAlpha=.4;
+      ctx.strokeStyle=this.invincible>0?C.amber:'#FF3B2F';
+      ctx.shadowColor=this.invincible>0?C.amber:'#FF3B2F';
+      ctx.shadowBlur=24;
       ctx.lineWidth=1.5;
       ctx.beginPath();
       ctx.roundRect(ox-2,oy-2,gsize+4,gsize+4,r+2);
@@ -954,76 +1010,135 @@ class SnakeGame {
       ctx.restore();
     })();
 
-    // Foods
+    // Foods — Devil Fruits
     this.foods.forEach(food=>{
       const cx=(food.x+.5)*cell, cy=(food.y+.5)*cell;
-      const r=cell*.36 + Math.sin(food.pulse)*cell*.05;
-      const gcolor=food.glow;
+      const r=cell*.36 + Math.sin(food.pulse)*cell*.04;
 
       ctx.save();
       ctx.shadowColor=food.color;
-      ctx.shadowBlur=18+Math.sin(food.pulse)*8;
+      ctx.shadowBlur=20+Math.sin(food.pulse)*8;
 
       if(food.type==='bonus'){
-        // Spinning star
+        // Mera Mera no Mi — Flame fruit (amber/orange)
         ctx.translate(cx,cy);
-        ctx.rotate(food.rot);
-        ctx.fillStyle=C.amber;
-        drawStar(ctx,0,0,r,r*.5,5);
-        ctx.fill();
-        // Inner shine
-        ctx.fillStyle='rgba(255,255,255,0.6)';
-        drawStar(ctx,0,0,r*.4,r*.2,5);
-        ctx.fill();
-      } else if(food.type==='power'){
-        // Pulsing multi-ring orb
-        ctx.beginPath();
-        const pg=ctx.createRadialGradient(cx-r*.3,cy-r*.3,0,cx,cy,r);
-        pg.addColorStop(0,'rgba(180,255,255,0.9)');
-        pg.addColorStop(.5,C.cyan);
-        pg.addColorStop(1,'rgba(0,100,180,0.3)');
-        ctx.fillStyle=pg;
-        ctx.arc(cx,cy,r,0,Math.PI*2);
-        ctx.fill();
-        // Ring
-        ctx.strokeStyle=C.cyan;
-        ctx.lineWidth=1.5;
-        ctx.globalAlpha=.5+.3*Math.sin(food.pulse*1.5);
-        ctx.beginPath();
-        ctx.arc(cx,cy,r*1.5,0,Math.PI*2);
-        ctx.stroke();
-      } else {
-        // Normal — glowing orb
-        const fg=ctx.createRadialGradient(cx-r*.35,cy-r*.35,0,cx,cy,r);
-        fg.addColorStop(0,'rgba(255,180,200,0.95)');
-        fg.addColorStop(.4,C.mag);
-        fg.addColorStop(1,'rgba(180,0,60,0.3)');
-        ctx.beginPath();
+        // Fruit body
+        const fg=ctx.createRadialGradient(-r*.2,-r*.2,0,0,0,r);
+        fg.addColorStop(0,'#FFD580');
+        fg.addColorStop(.4,C.amber);
+        fg.addColorStop(1,'#8B5A00');
         ctx.fillStyle=fg;
-        ctx.arc(cx,cy,r,0,Math.PI*2);
+        ctx.beginPath();
+        ctx.arc(0,0,r,0,Math.PI*2);
         ctx.fill();
-        // Glint
-        ctx.fillStyle='rgba(255,255,255,0.65)';
+        // Devil fruit swirl
+        ctx.strokeStyle='rgba(0,0,0,0.35)';
+        ctx.lineWidth=r*.18;
+        ctx.lineCap='round';
+        ctx.rotate(food.rot);
+        ctx.beginPath();
+        ctx.arc(0,0,r*.45,0,Math.PI*1.5);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(r*.15,r*.15,r*.2,Math.PI,Math.PI*2.8);
+        ctx.stroke();
+        // Shine
+        ctx.rotate(-food.rot);
+        ctx.fillStyle='rgba(255,255,200,0.5)';
         ctx.shadowBlur=0;
         ctx.beginPath();
-        ctx.arc(cx-r*.3,cy-r*.3,r*.2,0,Math.PI*2);
+        ctx.arc(-r*.28,-r*.3,r*.18,0,Math.PI*2);
         ctx.fill();
+        ctx.translate(-cx,-cy);
+
+      } else if(food.type==='power'){
+        // Hito Hito no Mi — Human fruit (cyan glow, legendary)
+        ctx.translate(cx,cy);
+        const pg=ctx.createRadialGradient(-r*.25,-r*.25,0,0,0,r);
+        pg.addColorStop(0,'rgba(180,255,255,0.95)');
+        pg.addColorStop(.45,C.cyan);
+        pg.addColorStop(1,'rgba(0,60,100,0.4)');
+        ctx.fillStyle=pg;
+        ctx.beginPath();
+        ctx.arc(0,0,r,0,Math.PI*2);
+        ctx.fill();
+        // Swirl
+        ctx.strokeStyle='rgba(255,255,255,0.4)';
+        ctx.lineWidth=r*.16;
+        ctx.rotate(food.rot*1.5);
+        ctx.beginPath();
+        ctx.arc(0,0,r*.42,0,Math.PI*1.4);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(r*.1,r*.1,r*.18,Math.PI*.5,Math.PI*2.2);
+        ctx.stroke();
+        ctx.rotate(-food.rot*1.5);
+        // Outer pulse rings
+        ctx.globalAlpha=(0.4+.3*Math.sin(food.pulse*1.5))*.9;
+        ctx.strokeStyle=C.cyan;
+        ctx.lineWidth=1.2;
+        ctx.shadowBlur=12;
+        ctx.beginPath();
+        ctx.arc(0,0,r*1.55,0,Math.PI*2);
+        ctx.stroke();
+        // Shine
+        ctx.globalAlpha=1;
+        ctx.fillStyle='rgba(255,255,255,0.55)';
+        ctx.shadowBlur=0;
+        ctx.beginPath();
+        ctx.arc(-r*.25,-r*.28,r*.16,0,Math.PI*2);
+        ctx.fill();
+        ctx.translate(-cx,-cy);
+
+      } else {
+        // Gomu Gomu no Mi — Rubber fruit (magenta/purple, the main one)
+        ctx.translate(cx,cy);
+        const nfg=ctx.createRadialGradient(-r*.3,-r*.3,0,0,0,r);
+        nfg.addColorStop(0,'rgba(220,160,240,0.95)');
+        nfg.addColorStop(.4,'#9B59B6');
+        nfg.addColorStop(1,'rgba(60,0,90,0.5)');
+        ctx.fillStyle=nfg;
+        ctx.beginPath();
+        ctx.arc(0,0,r,0,Math.PI*2);
+        ctx.fill();
+        // Devil fruit swirl — signature pattern
+        ctx.strokeStyle='rgba(0,0,0,0.3)';
+        ctx.lineWidth=r*.2;
+        ctx.lineCap='round';
+        ctx.beginPath();
+        ctx.arc(-r*.08,-r*.08,r*.4,Math.PI*.2,Math.PI*1.7);
+        ctx.stroke();
+        ctx.lineWidth=r*.14;
+        ctx.beginPath();
+        ctx.arc(r*.12,r*.15,r*.22,Math.PI*1.1,Math.PI*2.6);
+        ctx.stroke();
+        // Shine
+        ctx.fillStyle='rgba(255,255,255,0.55)';
+        ctx.shadowBlur=0;
+        ctx.beginPath();
+        ctx.arc(-r*.3,-r*.3,r*.17,0,Math.PI*2);
+        ctx.fill();
+        ctx.translate(-cx,-cy);
       }
 
-      // Timer bar for non-normal foods
-      if(food.type!=='normal' && food.timer < 200){
+      // Timer arc for bonus/power foods
+      if(food.type!=='normal' && food.timer<200){
         const progress=food.timer/200;
         ctx.restore();
         ctx.save();
-        ctx.globalAlpha=.7;
-        ctx.strokeStyle='rgba(255,255,255,0.15)';
-        ctx.lineWidth=2;
+        ctx.globalAlpha=.65;
+        ctx.strokeStyle='rgba(255,255,255,0.12)';
+        ctx.lineWidth=2.5;
         ctx.beginPath();
-        ctx.arc(cx,cy,r*1.3,-Math.PI/2,-Math.PI/2+Math.PI*2*progress);
+        ctx.arc(cx,cy,r*1.45,-Math.PI/2,Math.PI*2-Math.PI/2);
         ctx.stroke();
         ctx.strokeStyle=food.color;
         ctx.shadowColor=food.color;
         ctx.shadowBlur=8;
+        ctx.lineWidth=2.5;
+        ctx.beginPath();
+        ctx.arc(cx,cy,r*1.45,-Math.PI/2,-Math.PI/2+Math.PI*2*progress);
+        ctx.stroke();
       }
 
       ctx.restore();
@@ -1041,11 +1156,11 @@ class SnakeGame {
       ctx.restore();
     }
 
-    // Dead flash
+    // Dead flash — purple Zoro slash
     if(this.dead){
       ctx.save();
-      ctx.fillStyle=C.mag;
-      ctx.globalAlpha=.12;
+      ctx.fillStyle='#9B59B6';
+      ctx.globalAlpha=.1;
       ctx.fillRect(0,0,cs,cs);
       ctx.restore();
     }
@@ -1117,24 +1232,35 @@ function runDemoSnake() {
     }
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    // Ocean background hint
+    ctx.fillStyle='rgba(13,27,46,0.3)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
     snake.forEach((s,i)=>{
       const t=1-i/snake.length;
-      ctx.globalAlpha=t*.6;
-      ctx.fillStyle=C.lime;
-      ctx.shadowColor=C.lime;
-      ctx.shadowBlur=15*t;
-      const sz=cell*.75;
+      ctx.globalAlpha=t*.55;
+      ctx.fillStyle='#FF3B2F';
+      ctx.shadowColor='#FF3B2F';
+      ctx.shadowBlur=12*t;
+      const sz=cell*.78;
       ctx.beginPath();
-      ctx.roundRect(s.x*cell+(cell-sz)/2,s.y*cell+(cell-sz)/2,sz,sz,sz*.3);
+      ctx.roundRect(s.x*cell+(cell-sz)/2,s.y*cell+(cell-sz)/2,sz,sz,sz*.35);
       ctx.fill();
     });
     ctx.globalAlpha=1;
     const pulse=Math.sin(tick*.06)*4;
-    ctx.shadowColor=C.mag;
-    ctx.shadowBlur=20+pulse;
-    ctx.fillStyle=C.mag;
+    // Devil fruit (purple orb)
+    ctx.shadowColor='#9B59B6';
+    ctx.shadowBlur=22+pulse;
+    const fg=ctx.createRadialGradient(
+      food.x*cell+cell*.35,food.y*cell+cell*.35,0,
+      food.x*cell+cell/2,food.y*cell+cell/2,cell*.34
+    );
+    fg.addColorStop(0,'rgba(220,160,240,0.95)');
+    fg.addColorStop(.4,'#9B59B6');
+    fg.addColorStop(1,'rgba(60,0,90,0.4)');
+    ctx.fillStyle=fg;
     ctx.beginPath();
-    ctx.arc(food.x*cell+cell/2,food.y*cell+cell/2,cell*.3+pulse*.1,0,Math.PI*2);
+    ctx.arc(food.x*cell+cell/2,food.y*cell+cell/2,cell*.3+pulse*.08,0,Math.PI*2);
     ctx.fill();
     ctx.shadowBlur=0;
     requestAnimationFrame(demoFrame);
@@ -1172,9 +1298,8 @@ document.head.appendChild(style);
 let game=null;
 
 window.addEventListener('load',()=>{
-  // High score on start screen
   const hi=parseInt(localStorage.getItem('snakeHi'))||0;
-  document.getElementById('startHiScore').textContent=`BEST  —  ${hi}`;
+  document.getElementById('startHiScore').textContent=`BOUNTY  ——  ${hi}`;
   document.getElementById('hudHi').textContent=hi;
 
   runDemoSnake();
